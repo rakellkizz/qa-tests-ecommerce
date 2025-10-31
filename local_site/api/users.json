@@ -1,0 +1,4 @@
+[
+  { "email": "cliente@estore.com", "senha": "123456", "nome": "Cliente E-Store" },
+  { "email": "admin@estore.com", "senha": "admin", "nome": "Admin E-Store" }
+]

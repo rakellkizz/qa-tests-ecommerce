@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <title>E-Store – Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial;margin:28px}
+    .card{max-width:380px;border:1px solid #e5e7eb;border-radius:10px;padding:16px}
+    input{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;margin-bottom:12px}
+    button{padding:10px 12px;border:0;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;width:100%}
+    .msg{margin-top:10px}
+  </style>
+</head>
+<body>
+  <h1>Login</h1>
+  <div class="card">
+    <input id="email" placeholder="E-mail"/>
+    <input id="senha" type="password" placeholder="Senha"/>
+    <button id="entrar">Entrar</button>
+    <div id="msg" class="msg" aria-live="polite"></div>
+  </div>
+
+  <script>
+    async function autenticar(email, senha){
+      const res = await fetch('./api/users.json');
+      const users = await res.json();
+      return users.find(u => u.email===email && u.senha===senha);
+    }
+
+    document.getElementById('entrar').addEventListener('click', async ()=>{
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+      const msg = document.getElementById('msg');
+      const user = await autenticar(email, senha);
+      if(user){
+        localStorage.setItem('auth', JSON.stringify({email:user.email, nome:user.nome}));
+        msg.textContent = 'Login efetuado! Redirecionando...';
+        setTimeout(()=> location.href='index.html', 500);
+      } else {
+        msg.textContent = 'Credenciais inválidas.';
+      }
+    });
+  </script>
+</body>
+</html>
