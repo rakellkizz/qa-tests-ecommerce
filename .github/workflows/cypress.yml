@@ -14,25 +14,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - name: Install deps (npm ci)
+      - name: Install dependencies
         run: npm ci
 
-      - name: Start local site (http://localhost:8080)
-        run: |
-          npx http-server ./local_site -p 8080 &
-          npx wait-on http://localhost:8080
+      # 🔹 Aqui entra o Cypress Action oficial
+      - name: Run Cypress (official action)
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          start: npx http-server ./local_site -p 8080
+          wait-on: 'http://localhost:8080'
 
-      - name: Run Cypress (headless)
-        run: npx cypress run
-
-      # Se falhar, publique evidências
-      - name: Upload screenshots/videos (on failure)
+      # (Opcional) envia prints/vídeos se algo falhar
+      - name: Upload artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
