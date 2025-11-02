@@ -1,4 +1,4 @@
-name: E2E (Cypress)
+name: E2E - Cypress
 
 on:
   push:
@@ -14,30 +14,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install deps (clean)
         run: npm ci
 
-      # 🔹 Aqui entra o Cypress Action oficial
-      - name: Run Cypress (official action)
+      - name: Start local server
+        run: |
+          npx http-server ./local_site -p 8080 -a 0.0.0.0 &
+          npx wait-on http://127.0.0.1:8080
+
+      - name: Run Cypress (headless)
         uses: cypress-io/github-action@v6
         with:
           install: false
-          start: npx http-server ./local_site -p 8080
-          wait-on: 'http://localhost:8080'
+          browser: chrome
 
-      # (Opcional) envia prints/vídeos se algo falhar
-      - name: Upload artifacts on failure
+      # Artefatos úteis se falhar
+      - name: Upload Cypress screenshots
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-artifacts
-          path: |
-            cypress/screenshots
-            cypress/videos
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
+
+      - name: Upload Cypress videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos
           if-no-files-found: ignore
