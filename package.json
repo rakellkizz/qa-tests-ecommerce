@@ -4,12 +4,13 @@
   "description": "Automação E2E/API de e-commerce com Cypress",
   "private": true,
   "scripts": {
-    "serve": "http-server ./local_site -p 8081",
+    "serve": "http-server ./local_site -p 8080 -a 0.0.0.0",
     "cy:open": "cypress open",
     "cy:run": "cypress run"
   },
   "devDependencies": {
     "cypress": "^13.13.0",
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "wait-on": "^9.0.1"
   }
 }

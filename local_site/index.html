@@ -50,8 +50,14 @@
     const elBusca = document.getElementById('busca');
     const elItens = document.getElementById('itens');
     const elTotal = document.getElementById('total');
-    const btnLimpar = document.getElementById('btn-limpar');
 
+function renderTotal(total) {
+  elTotal.textContent = total.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+    const btnLimpar = document.getElementById('btn-limpar');
     const carrinho = JSON.parse(localStorage.getItem('cart') || '[]');
 
     function renderLista(lista){
@@ -91,21 +97,24 @@
     }
 
     function renderCarrinho(){
-      elItens.innerHTML = '';
-      let total = 0;
-      carrinho.forEach(i=>{
-        total += i.preco * i.qtd;
-        const row = document.createElement('div');
-        row.innerHTML = `
-          ${i.nome} x${i.qtd} — R$ ${(i.preco*i.qtd).toFixed(2)}
-          <button class="secondary" data-rem="${i.id}">-</button>
-        `;
-        row.querySelector('button').addEventListener('click',()=>remover(i.id));
-        elItens.appendChild(row);
-      });
-      elTotal.textContent = total.toFixed(2);
-    }
+  elItens.innerHTML = '';
+  let total = 0;
+  carrinho.forEach(i=>{
+    total += i.preco * i.qtd;
+    const row = document.createElement('div');
+    row.innerHTML = `
+      ${i.nome} x${i.qtd} — R$ ${(i.preco*i.qtd).toFixed(2)}
+      <button class="secondary" data-rem="${i.id}">-</button>
+    `;
+    row.querySelector('button').addEventListener('click',()=>remover(i.id));
+    elItens.appendChild(row);
+  });
+  // ❌ ANTES (quebrava o formato BR):
+  // elTotal.textContent = total.toFixed(2);
 
+  // ✅ DEPOIS: usa a função que formata com vírgula (pt-BR)
+  renderTotal(total);
+}
     elBusca.addEventListener('input', ()=>{
       const q = elBusca.value.toLowerCase();
       const filtrados = produtos.filter(p => p.nome.toLowerCase().includes(q));
