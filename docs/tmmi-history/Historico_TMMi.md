@@ -82,3 +82,30 @@ Aplicar TMMi elevou a previsibilidade, reduziu retrabalho e **comprovou** maturi
 **Autor:** Raquel G. de Souza  
 **Projeto:** QA Tests E-commerce  
 **Referência:** TMMi Foundation
+---
+
+## 📈 Allure Report – Test Evidence and Quality Metrics
+
+The **Allure Framework** was integrated into this project to transform raw Cypress test results into **interactive visual reports**.  
+It allows for a clear and professional view of all executions, highlighting success rates, performance, and testing coverage.
+
+### 🎯 Purpose within the Project
+Allure centralizes the evidence of automated executions (E2E and API), helping QA, Dev, and management teams visualize:
+
+- ✅ Total number of executed and passed tests  
+- 📊 Suites and categories covered (e.g., Login, Cart, API)  
+- ⏱️ Execution time and trend tracking per release  
+- 💡 Areas with higher stability and potential improvement  
+
+The Allure report also strengthens the **TMMi maturity model**, especially in Levels 3 and 4, where metrics and process measurements are fundamental for continuous improvement.
+
+### 🧩 Technical Integration
+Allure is connected through the plugin `@shelex/cypress-allure-plugin`, automatically collecting test metadata from each Cypress run and generating dynamic dashboards.
+
+**Main Commands:**
+```bash
+# Generate report
+npm run allure:generate
+
+# Open report locally
+npm run allure:open

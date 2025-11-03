@@ -5,8 +5,10 @@
   "private": true,
   "scripts": {
     "serve": "http-server ./local_site -p 8080 -a 0.0.0.0",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "e2e": "cypress run --config baseUrl=http://127.0.0.1:8080,retries=2,video=true",
+    "e2e:junit": "cypress run --reporter mocha-junit-reporter --reporter-options \"mochaFile=results/junit-[hash].xml,testsuitesTitle=E2E-Cypress\" --config baseUrl=http://127.0.0.1:8080,retries=2,video=true",
+    "allure:generate": ".\\\\node_modules\\\\.bin\\\\allure.cmd generate allure-results --clean -o allure-report",
+    "allure:open": ".\\\\node_modules\\\\.bin\\\\allure.cmd open allure-report"
   },
   "devDependencies": {
     "@shelex/cypress-allure-plugin": "^2.41.2",
