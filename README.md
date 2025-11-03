@@ -83,6 +83,10 @@ Benefícios práticos do uso do Cypress
 ✅ Relatórios visuais e detalhados para auditoria e acompanhamento de bugs
 ✅ Integração simples com GitHub Actions, Slack, Jira e outras ferramentas corporativas
 
+## 📊 Histórico de Maturidade de Testes (TMMi)
+Veja como o modelo TMMi foi aplicado neste projeto:  
+➡️ [docs/tmmi-history/Historico_TMMi.md](docs/tmmi-history/Historico_TMMi.md)
+
 💡 Conclusão
 
 O uso do Cypress representa um avanço na cultura de qualidade contínua dentro das empresas.

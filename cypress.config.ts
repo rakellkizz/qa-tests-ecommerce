@@ -1,11 +1,11 @@
-// cypress.config.js
-const { defineConfig } = require('cypress')
+// cypress.config.ts
+import { defineConfig } from 'cypress'
 
-module.exports = defineConfig({
+export default defineConfig({
   e2e: {
-    baseUrl: 'http://127.0.0.1:8080', // pode ajustar se usar outra porta
+    baseUrl: 'http://127.0.0.1:8080',
     setupNodeEvents(on, config) {
-      // habilita o writer do Allure
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@shelex/cypress-allure-plugin/writer')(on, config)
       return config
     },
@@ -13,7 +13,6 @@ module.exports = defineConfig({
     video: true,
     retries: 2
   },
-  // Mantemos JUnit para KPIs TMMi
   reporter: 'mocha-junit-reporter',
   reporterOptions: {
     mochaFile: 'results/junit-[hash].xml',
@@ -21,7 +20,7 @@ module.exports = defineConfig({
   },
   env: {
     allure: true,
-    allureResultsPath: 'allure-results',    // onde os resultados do Allure são gravados
+    allureResultsPath: 'allure-results',
     allureLogCypress: true
   }
 })
