@@ -11,39 +11,56 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 🧩 1. Clona o repositório
+      # 1) Checkout
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ⚙️ 2. Configura o Node com cache para acelerar builds
+      # 2) Node + cache npm
       - name: Setup Node (com cache)
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      # 📦 3. Instala dependências limpas
+      # 3) Instalar dependências
       - name: Install deps (clean)
         run: npm ci
 
-      # 🌐 4. Sobe o servidor local (ex: site de teste)
+      # 4) Subir servidor local
       - name: Start local server
         run: |
           npx http-server ./local_site -p 8080 -a 0.0.0.0 &
           npx wait-on http://127.0.0.1:8080
 
-      # 🧪 5. Executa os testes Cypress no Chrome (modo headless)
+      # 5) Rodar Cypress (gera JUnit + Allure results)
       - name: Run Cypress (headless)
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
           command: |
             npx cypress run \
-              --reporter mocha-junit-reporter \
-              --reporter-options "mochaFile=results/junit-[hash].xml,testsuitesTitle=E2E-Cypress" \
               --config baseUrl=http://127.0.0.1:8080,retries=2,video=true
 
-      # 📊 6. Envia o relatório JUnit como artefato
+      # 6) Gerar relatório Allure (HTML) a partir de allure-results
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          npx allure generate allure-results --clean -o allure-report
+          # Opcional: gerar também um zip do relatório para download offline
+          cd allure-report && zip -r ../allure-report.zip . && cd ..
+
+      # 7) Upload do relatório Allure
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: |
+            allure-report
+            allure-report.zip
+          if-no-files-found: ignore
+
+      # 8) Upload JUnit (KPIs TMMi)
       - name: Upload JUnit
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,7 +69,7 @@ jobs:
           path: results/*.xml
           if-no-files-found: ignore
 
-      # 📸 7. Envia screenshots se falhar
+      # 9) Upload screenshots se falhar
       - name: Upload Cypress screenshots
         if: failure()
         uses: actions/upload-artifact@v4
@@ -61,7 +78,7 @@ jobs:
           path: cypress/screenshots
           if-no-files-found: ignore
 
-      # 🎬 8. Envia vídeos sempre (para análise de execução)
+      # 10) Upload vídeos sempre (para análise)
       - name: Upload Cypress videos
         if: always()
         uses: actions/upload-artifact@v4
