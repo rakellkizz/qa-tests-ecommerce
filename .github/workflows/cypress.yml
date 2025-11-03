@@ -11,46 +11,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 🧩 1. Clona o repositório
       - name: Checkout
         uses: actions/checkout@v4
 
+      # ⚙️ 2. Configura o Node com cache para acelerar builds
       - name: Setup Node (com cache)
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
+      # 📦 3. Instala dependências limpas
       - name: Install deps (clean)
         run: npm ci
 
+      # 🌐 4. Sobe o servidor local (ex: site de teste)
       - name: Start local server
         run: |
           npx http-server ./local_site -p 8080 -a 0.0.0.0 &
           npx wait-on http://127.0.0.1:8080
 
-      # Executa Cypress em headless no Chrome
-      # (Sem "install: false" para garantir download do binário do Cypress)
+      # 🧪 5. Executa os testes Cypress no Chrome (modo headless)
       - name: Run Cypress (headless)
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          # Gera um relatório JSON nativo do Mocha para uso em métricas (não requer deps extras)
-          # Se quiser usar outro reporter depois (Mochawesome/Allure/JUnit), dá pra trocar aqui.
           command: |
             npx cypress run \
-              --reporter json \
-              --reporter-options "output=results/cypress-report.json"
+              --reporter mocha-junit-reporter \
+              --reporter-options "mochaFile=results/junit-[hash].xml,testsuitesTitle=E2E-Cypress" \
+              --config baseUrl=http://127.0.0.1:8080,retries=2,video=true
 
-      # Artefatos de relatório (JSON) – útil para histórico/KPIs do TMMi
-      - name: Upload Cypress JSON report
+      # 📊 6. Envia o relatório JUnit como artefato
+      - name: Upload JUnit
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-json-report
-          path: results/cypress-report.json
+          name: junit-results
+          path: results/*.xml
           if-no-files-found: ignore
 
-      # Artefatos úteis se falhar
+      # 📸 7. Envia screenshots se falhar
       - name: Upload Cypress screenshots
         if: failure()
         uses: actions/upload-artifact@v4
@@ -59,6 +61,7 @@ jobs:
           path: cypress/screenshots
           if-no-files-found: ignore
 
+      # 🎬 8. Envia vídeos sempre (para análise de execução)
       - name: Upload Cypress videos
         if: always()
         uses: actions/upload-artifact@v4
