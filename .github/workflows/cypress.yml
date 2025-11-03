@@ -14,10 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node (com cache)
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install deps (clean)
         run: npm ci
@@ -27,11 +28,27 @@ jobs:
           npx http-server ./local_site -p 8080 -a 0.0.0.0 &
           npx wait-on http://127.0.0.1:8080
 
+      # Executa Cypress em headless no Chrome
+      # (Sem "install: false" para garantir download do binário do Cypress)
       - name: Run Cypress (headless)
         uses: cypress-io/github-action@v6
         with:
-          install: false
           browser: chrome
+          # Gera um relatório JSON nativo do Mocha para uso em métricas (não requer deps extras)
+          # Se quiser usar outro reporter depois (Mochawesome/Allure/JUnit), dá pra trocar aqui.
+          command: |
+            npx cypress run \
+              --reporter json \
+              --reporter-options "output=results/cypress-report.json"
+
+      # Artefatos de relatório (JSON) – útil para histórico/KPIs do TMMi
+      - name: Upload Cypress JSON report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-json-report
+          path: results/cypress-report.json
+          if-no-files-found: ignore
 
       # Artefatos úteis se falhar
       - name: Upload Cypress screenshots
