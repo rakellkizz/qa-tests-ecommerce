@@ -8,3 +8,8 @@ npm-debug.log
 allure-results/
 allure-report/
 results/
+
+# integration tests
+projetos/tests-integration/coverage/
+projetos/tests-integration/results/
+

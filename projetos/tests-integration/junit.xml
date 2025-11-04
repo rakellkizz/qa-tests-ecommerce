@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="1.382">
+  <testsuite name="Auth API" errors="0" failures="0" skipped="0" timestamp="2025-11-04T19:54:09" time="0.884" tests="3">
+    <testcase classname="Auth API should 400 when missing fields" name="Auth API should 400 when missing fields" time="0.049">
+    </testcase>
+    <testcase classname="Auth API should 401 when invalid credentials" name="Auth API should 401 when invalid credentials" time="0.008">
+    </testcase>
+    <testcase classname="Auth API should 200 and return token when valid credentials" name="Auth API should 200 and return token when valid credentials" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="Products API" errors="0" failures="0" skipped="0" timestamp="2025-11-04T19:54:10" time="0.185" tests="1">
+    <testcase classname="Products API should list products with total and items" name="Products API should list products with total and items" time="0.014">
+    </testcase>
+  </testsuite>
+  <testsuite name="Healthcheck" errors="0" failures="0" skipped="0" timestamp="2025-11-04T19:54:10" time="0.178" tests="1">
+    <testcase classname="Healthcheck should return 200 and service status" name="Healthcheck should return 200 and service status" time="0.011">
+    </testcase>
+  </testsuite>
+</testsuites>
