@@ -12,7 +12,8 @@ results/
 # integration tests
 projetos/tests-integration/coverage/
 projetos/tests-integration/results/
-
-
 /projetos/src/
 /projetos/tests/
+
+# relatórios temporários
+junit.xml
