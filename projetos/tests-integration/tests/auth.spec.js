@@ -1,4 +1,4 @@
-﻿const request = require('supertest')
+const request = require('supertest')
 const app = require('../src/app')
 
 describe('Auth API', () => {
