@@ -1,0 +1,46 @@
+name: QA Pipeline - E2E + Integration + Performance
+
+on:
+  push:
+    branches: [ "main", "perf/*", "docs/*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Testes de Integração (Jest)
+        working-directory: ./projetos/tests-integration
+        run: npm test
+
+      - name: Gerar relatório JUnit
+        if: success() || failure()
+        run: |
+          echo "Relatório JUnit gerado em projetos/tests-integration/junit.xml"
+
+      - name: Testes de Performance (K6)
+        working-directory: ./projetos/tests-performance-k6
+        run: |
+          docker run --rm -i -v "${{ github.workspace }}/projetos/tests-performance-k6:/scripts" \
+            -w /scripts -e K6_BASE_URL="https://httpbin.test.k6.io" grafana/k6 run load_test.js
+
+      - name: Upload de Relatórios (Allure e K6)
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            projetos/tests-integration/junit.xml
+            projetos/tests-performance-k6/results/
