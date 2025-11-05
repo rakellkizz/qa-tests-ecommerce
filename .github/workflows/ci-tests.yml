@@ -19,25 +19,33 @@ jobs:
         with:
           node-version: 18
 
-      - name: Instalar dependências
-        run: npm install
-
-      - name: Testes de Integração (Jest)
+      # (1) Instala SÓ o que é necessário para os testes de integração
+      - name: Instalar deps (tests-integration)
+        run: npm ci
         working-directory: ./projetos/tests-integration
-        run: npm test
 
-      - name: Gerar relatório JUnit
+      # (2) Roda os testes de integração (usa o jest local da pasta)
+      - name: Testes de Integração (Jest)
+        run: npx jest -c jest.config.js --runInBand --reporters=default --reporters=jest-junit
+        working-directory: ./projetos/tests-integration
+
+      # (3) Garante o relatório JUnit
+      - name: Garantir relatório JUnit
         if: success() || failure()
-        run: |
-          echo "Relatório JUnit gerado em projetos/tests-integration/junit.xml"
+        run: test -f junit.xml && echo "JUnit ok" || echo "Sem junit.xml"
+        working-directory: ./projetos/tests-integration
 
+      # (4) Testes de Performance (K6) via Docker
       - name: Testes de Performance (K6)
-        working-directory: ./projetos/tests-performance-k6
         run: |
-          docker run --rm -i -v "${{ github.workspace }}/projetos/tests-performance-k6:/scripts" \
-            -w /scripts -e K6_BASE_URL="https://httpbin.test.k6.io" grafana/k6 run load_test.js
+          docker run --rm -i \
+            -v "${{ github.workspace }}/projetos/tests-performance-k6:/scripts" \
+            -w /scripts \
+            -e K6_BASE_URL="https://httpbin.test.k6.io" \
+            grafana/k6 run load_test.js
 
-      - name: Upload de Relatórios (Allure e K6)
+      # (5) Publica artefatos
+      - name: Upload de Relatórios
         uses: actions/upload-artifact@v4
         with:
           name: reports
