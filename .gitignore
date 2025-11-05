@@ -13,3 +13,6 @@ results/
 projetos/tests-integration/coverage/
 projetos/tests-integration/results/
 
+
+/projetos/src/
+/projetos/tests/
