@@ -1,6 +1,40 @@
 # qa-tests-ecommerce
 Projeto prático de automação de qualidade para um e-commerce, com foco em testes E2E, API e integração contínua via GitHub Actions.
 
+## 📊 Quality Dashboard powered by Allure & TMMi
+✨ Continuous Quality. Real Evidence. Professional Metrics.
+...
+
+## 📊 Painel de Qualidade — Allure & TMMi
+✨ Qualidade Contínua. Evidência Real. Métricas Profissionais.
+...
+
+
+
+## 📊 Painel de Qualidade — Allure & TMMi
+
+✨ **Qualidade Contínua. Evidência Real. Métricas Profissionais.**
+
+Este projeto implementa um **ecossistema completo de testes automatizados**,  
+integrando **Cypress + Allure + GitHub Actions**, totalmente alinhado à abordagem do **TMMi (Test Maturity Model Integration)**.
+
+| 📁 Componente | ⚙️ Função | 📈 Saída |
+|---------------|-----------|----------|
+| **Cypress** | Executa fluxos de testes E2E e API | Resultados e logs |
+| **Mocha + JUnit** | Estrutura os dados para métricas | Relatórios XML |
+| **Allure Framework** | Gera relatórios visuais e interativos | Dashboards HTML |
+| **GitHub Actions CI** | Automatiza a execução a cada commit | Relatórios contínuos |
+| **Metodologia TMMi** | Garante maturidade e melhoria de QA | Evolução da qualidade |
+
+🧾 **Relatórios mais recentes:**  
+- [📊 Allure Report – Visualização e Métricas](docs/allure/Entendendo_o_Allure.md)  
+- [📘 Histórico de Maturidade de Testes (TMMi)](docs/tmmi-history/Historico_TMMi.md)
+
+---
+
+# qa-tests-ecommerce
+Projeto prático de automação de qualidade para um e-commerce, com foco em testes E2E, API e integração contínua via GitHub Actions.
+
 
 # 🧪 Cypress – Automação de Testes de Qualidade
 
@@ -82,6 +116,10 @@ Benefícios práticos do uso do Cypress
 ✅ Execução paralela e gravação em vídeo das execuções
 ✅ Relatórios visuais e detalhados para auditoria e acompanhamento de bugs
 ✅ Integração simples com GitHub Actions, Slack, Jira e outras ferramentas corporativas
+
+## 📊 Histórico de Maturidade de Testes (TMMi)
+Veja como o modelo TMMi foi aplicado neste projeto:  
+➡️ [docs/tmmi-history/Historico_TMMi.md](docs/tmmi-history/Historico_TMMi.md)
 
 💡 Conclusão
 

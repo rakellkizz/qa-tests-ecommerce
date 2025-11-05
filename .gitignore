@@ -4,3 +4,12 @@ cypress/screenshots/
 .DS_Store
 npm-debug.log
 .env
+# Relatórios e resultados de teste
+allure-results/
+allure-report/
+results/
+
+# integration tests
+projetos/tests-integration/coverage/
+projetos/tests-integration/results/
+
