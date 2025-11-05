@@ -1,0 +1,10 @@
+{
+  "name": "tests-performance-k6",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Load & performance tests using k6 (stages + thresholds + summary).",
+  "scripts": {
+    "load:api": "docker run --rm -i -v \"${PWD}:/scripts\" -w /scripts -e K6_BASE_URL=\"http://host.docker.internal:3333\" grafana/k6 run load_test.js",
+    "load:site": "docker run --rm -i -v \"${PWD}:/scripts\" -w /scripts -e K6_BASE_URL=\"http://host.docker.internal:8080\" grafana/k6 run load_site.js"
+  }
+}
