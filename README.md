@@ -121,6 +121,19 @@ Benefícios práticos do uso do Cypress
 Veja como o modelo TMMi foi aplicado neste projeto:  
 ➡️ [docs/tmmi-history/Historico_TMMi.md](docs/tmmi-history/Historico_TMMi.md)
 
+## 🧬 Mutation Testing (Stryker) — WIP controlado
+
+Implementei a base de Mutation Testing com **Stryker** no subprojeto `projetos/tests-integration`.  
+Por padrão, **não quebro a pipeline** em Windows devido a nuances de sandbox/paths do Jest dentro do Stryker no SO (ex.: conflitos de `.stryker-tmp` e detecção de config).  
+Isso é **intencional**: priorizei estabilidade de CI/CD e valor de negócio (E2E + Integração + Carga + Allure).
+
+**Como rodar:**
+```bash
+cd projetos/tests-integration
+npm run test:mutation           # modo seguro (não falha no Windows; imprime orientação)
+npm run test:mutation:strict    # roda “pra valer” (recomendado em WSL2/Ubuntu ou runner Linux)
+
+
 💡 Conclusão
 
 O uso do Cypress representa um avanço na cultura de qualidade contínua dentro das empresas.
